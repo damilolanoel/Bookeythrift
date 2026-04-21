@@ -1,0 +1,637 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
+
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --navy:#1B263B;
+  --navy-light:#243550;
+  --navy-deep:#0F1824;
+  --green:#2E8B57;
+  --green-light:#3aad6c;
+  --green-pale:#e8f7f0;
+  --gold:#D4AF37;
+  --gold-light:#e8c94a;
+  --gold-pale:#fdf8e7;
+  --white:#fff;
+  --red:#E74C3C;
+  --gray:#f5f5f3;
+  --gray2:#e8e8e5;
+  --gray3:#9a9a95;
+  --text:#1a1a18;
+  --text2:#555550;
+}
+body{font-family:'DM Sans',sans-serif;background:var(--gray);color:var(--text);font-size:14px;min-height:100vh;}
+
+/* NAV */
+.nav{background:var(--navy);display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:56px;position:sticky;top:0;z-index:100;}
+.nav-brand{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;color:var(--gold);letter-spacing:0.5px;}
+.nav-brand span{color:var(--white);font-weight:400;}
+.nav-tabs{display:flex;gap:2px;}
+.nav-tab{background:none;border:none;color:rgba(255,255,255,0.55);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;padding:6px 12px;border-radius:6px;cursor:pointer;transition:all .2s;letter-spacing:0.3px;}
+.nav-tab:hover{color:var(--white);background:rgba(255,255,255,0.08);}
+.nav-tab.active{color:var(--gold);background:rgba(212,175,55,0.12);}
+.nav-badge{background:var(--red);color:#fff;font-size:10px;border-radius:10px;padding:1px 5px;margin-left:4px;font-weight:600;}
+
+/* SCREENS */
+.screen{display:none;padding:24px;}
+.screen.active{display:block;}
+
+/* ===== LANDING PAGE ===== */
+.hero{background:var(--navy);border-radius:16px;padding:48px 40px;margin-bottom:24px;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;top:-60px;right:-60px;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,rgba(212,175,55,0.12) 0%,transparent 70%);}
+.hero::after{content:'';position:absolute;bottom:-40px;left:30px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(46,139,87,0.15) 0%,transparent 70%);}
+.hero-eyebrow{color:var(--gold);font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;margin-bottom:12px;}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:700;color:var(--white);line-height:1.15;margin-bottom:16px;}
+.hero-title em{color:var(--gold);font-style:normal;}
+.hero-subtitle{color:rgba(255,255,255,0.65);font-size:15px;line-height:1.7;max-width:440px;margin-bottom:32px;}
+.hero-cta-row{display:flex;gap:12px;flex-wrap:wrap;}
+.btn-gold{background:var(--gold);color:var(--navy-deep);font-family:'DM Sans',sans-serif;font-weight:600;font-size:13px;border:none;border-radius:8px;padding:12px 24px;cursor:pointer;transition:all .2s;letter-spacing:0.2px;}
+.btn-gold:hover{background:var(--gold-light);transform:translateY(-1px);}
+.btn-outline{background:transparent;color:var(--white);font-family:'DM Sans',sans-serif;font-weight:500;font-size:13px;border:1px solid rgba(255,255,255,0.25);border-radius:8px;padding:12px 24px;cursor:pointer;transition:all .2s;}
+.btn-outline:hover{border-color:rgba(255,255,255,0.5);background:rgba(255,255,255,0.06);}
+.hero-stats{display:flex;gap:32px;margin-top:32px;padding-top:28px;border-top:1px solid rgba(255,255,255,0.1);}
+.hero-stat-val{font-family:'DM Mono',monospace;font-size:22px;font-weight:500;color:var(--gold);}
+.hero-stat-label{font-size:11px;color:rgba(255,255,255,0.45);margin-top:2px;letter-spacing:0.3px;}
+
+/* TIER CARDS */
+.section-title{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;color:var(--navy);margin-bottom:4px;}
+.section-sub{color:var(--text2);font-size:13px;margin-bottom:20px;}
+.tiers-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;}
+.tier-card{background:var(--white);border-radius:12px;padding:20px;border:1px solid var(--gray2);cursor:pointer;transition:all .2s;position:relative;}
+.tier-card:hover{border-color:var(--green);transform:translateY(-2px);box-shadow:0 8px 24px rgba(46,139,87,0.1);}
+.tier-card.featured{border-color:var(--gold);background:var(--gold-pale);}
+.tier-badge{position:absolute;top:-1px;right:16px;background:var(--gold);color:var(--navy-deep);font-size:10px;font-weight:700;padding:3px 8px;border-radius:0 0 6px 6px;letter-spacing:0.5px;}
+.tier-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;margin-bottom:12px;}
+.tier-icon.s{background:#e8f7f0;} .tier-icon.g{background:#e8f0fd;} .tier-icon.e{background:var(--gold-pale);} .tier-icon.f{background:#f5e8fd;}
+.tier-name{font-weight:600;font-size:14px;color:var(--navy);margin-bottom:4px;}
+.tier-freq{font-size:11px;color:var(--text2);margin-bottom:8px;}
+.tier-amount{font-family:'DM Mono',monospace;font-size:18px;font-weight:500;color:var(--green);}
+.tier-amount span{font-size:11px;font-weight:400;color:var(--text2);}
+.tier-cycle{font-size:11px;color:var(--text2);margin-top:6px;}
+
+/* TRUST SECTION */
+.trust-row{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:24px;}
+.trust-card{background:var(--white);border-radius:12px;padding:18px;border:1px solid var(--gray2);}
+.trust-icon{font-size:22px;margin-bottom:8px;}
+.trust-title{font-weight:600;font-size:13px;color:var(--navy);margin-bottom:4px;}
+.trust-desc{font-size:12px;color:var(--text2);line-height:1.6;}
+
+/* ===== MEMBER DASHBOARD ===== */
+.dash-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;}
+.dash-greeting{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:700;color:var(--navy);}
+.dash-greeting span{color:var(--green);}
+.dash-date{font-size:12px;color:var(--text2);margin-top:2px;}
+.metrics-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px;margin-bottom:20px;}
+.metric-card{background:var(--white);border-radius:12px;padding:18px;border:1px solid var(--gray2);}
+.metric-card.primary{background:var(--navy);}
+.metric-label{font-size:11px;font-weight:500;letter-spacing:0.5px;text-transform:uppercase;color:var(--gray3);margin-bottom:6px;}
+.metric-card.primary .metric-label{color:rgba(255,255,255,0.5);}
+.metric-val{font-family:'DM Mono',monospace;font-size:22px;font-weight:500;color:var(--text);}
+.metric-card.primary .metric-val{color:var(--gold);}
+.metric-change{font-size:11px;color:var(--green);margin-top:4px;}
+.metric-change.neg{color:var(--red);}
+
+/* POOL STATUS */
+.pool-card{background:var(--white);border-radius:12px;padding:20px;border:1px solid var(--gray2);margin-bottom:14px;}
+.pool-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+.pool-title{font-weight:600;font-size:15px;color:var(--navy);}
+.pool-badge{font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px;}
+.badge-active{background:var(--green-pale);color:var(--green);}
+.badge-pending{background:#fff8e7;color:#b8860b;}
+.badge-paid{background:#e8f7f0;color:var(--green);}
+.pool-progress-label{display:flex;justify-content:space-between;font-size:12px;color:var(--text2);margin-bottom:6px;}
+.pool-bar{height:6px;background:var(--gray2);border-radius:3px;overflow:hidden;}
+.pool-bar-fill{height:100%;border-radius:3px;background:var(--green);transition:width .5s;}
+.pool-details{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px;}
+.pool-detail-label{font-size:11px;color:var(--text2);margin-bottom:2px;}
+.pool-detail-val{font-family:'DM Mono',monospace;font-size:13px;font-weight:500;color:var(--text);}
+
+/* CONTRIBUTION HISTORY */
+.history-table{width:100%;border-collapse:collapse;}
+.history-table th{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;color:var(--text2);padding:8px 12px;text-align:left;border-bottom:1px solid var(--gray2);}
+.history-table td{padding:10px 12px;font-size:13px;border-bottom:1px solid var(--gray2);color:var(--text);}
+.history-table tr:last-child td{border-bottom:none;}
+.status-dot{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:6px;}
+.dot-green{background:var(--green);}
+.dot-red{background:var(--red);}
+.dot-gold{background:var(--gold);}
+
+/* ===== ADMIN PANEL ===== */
+.admin-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px;}
+.admin-metric{background:var(--white);border-radius:12px;padding:16px 18px;border:1px solid var(--gray2);}
+.admin-metric-val{font-family:'DM Mono',monospace;font-size:20px;font-weight:500;}
+.admin-metric-val.green{color:var(--green);}
+.admin-metric-val.gold{color:var(--gold);}
+.admin-metric-val.red{color:var(--red);}
+.admin-metric-label{font-size:11px;color:var(--text2);margin-top:3px;}
+
+.search-bar{background:var(--white);border:1px solid var(--gray2);border-radius:8px;padding:8px 14px;font-family:'DM Sans',sans-serif;font-size:13px;width:100%;margin-bottom:16px;color:var(--text);outline:none;}
+.search-bar:focus{border-color:var(--green);}
+
+.members-table{width:100%;border-collapse:collapse;background:var(--white);border-radius:12px;overflow:hidden;border:1px solid var(--gray2);}
+.members-table th{background:var(--navy);color:rgba(255,255,255,0.7);font-size:11px;font-weight:500;padding:10px 14px;text-align:left;letter-spacing:0.5px;}
+.members-table td{padding:10px 14px;font-size:13px;border-bottom:1px solid var(--gray2);}
+.members-table tr:last-child td{border-bottom:none;}
+.members-table tr:hover td{background:#fafaf8;}
+.tier-pill{font-size:10px;font-weight:600;padding:3px 8px;border-radius:10px;letter-spacing:0.3px;}
+.pill-starter{background:#e8f7f0;color:var(--green);}
+.pill-growth{background:#e8f0fd;color:#5040c0;}
+.pill-empire{background:var(--gold-pale);color:#8B6914;}
+.pill-flex{background:#fde8fd;color:#8b14a0;}
+.action-btn{background:none;border:1px solid var(--gray2);color:var(--text2);font-size:11px;padding:4px 10px;border-radius:6px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s;}
+.action-btn:hover{border-color:var(--green);color:var(--green);}
+.action-btn.warn:hover{border-color:var(--red);color:var(--red);}
+
+/* ===== POOL MANAGER ===== */
+.pools-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;}
+.pool-mgr-card{background:var(--white);border-radius:14px;border:1px solid var(--gray2);overflow:hidden;}
+.pool-mgr-header{padding:16px 18px 14px;border-bottom:1px solid var(--gray2);}
+.pool-mgr-name{font-weight:700;font-size:15px;color:var(--navy);margin-bottom:2px;}
+.pool-mgr-meta{font-size:11px;color:var(--text2);}
+.pool-mgr-body{padding:16px 18px;}
+.pool-queue{margin-top:12px;}
+.queue-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;color:var(--text2);margin-bottom:8px;}
+.queue-item{display:flex;align-items:center;justify-content:space-between;padding:8px 10px;background:var(--gray);border-radius:8px;margin-bottom:6px;}
+.queue-item.next{background:var(--green-pale);border:1px solid rgba(46,139,87,0.2);}
+.queue-name{font-size:12px;font-weight:500;color:var(--text);}
+.queue-pos{font-size:10px;color:var(--text2);}
+.queue-amount{font-family:'DM Mono',monospace;font-size:12px;color:var(--green);}
+.pool-payout-btn{width:100%;background:var(--green);color:#fff;font-family:'DM Sans',sans-serif;font-weight:600;font-size:13px;border:none;border-radius:8px;padding:10px;cursor:pointer;margin-top:12px;transition:all .2s;}
+.pool-payout-btn:hover{background:var(--green-light);}
+
+/* ===== CONTRIBUTE ===== */
+.contrib-form{background:var(--white);border-radius:14px;border:1px solid var(--gray2);padding:24px;max-width:480px;}
+.form-group{margin-bottom:18px;}
+.form-label{font-size:12px;font-weight:600;color:var(--text2);letter-spacing:0.3px;text-transform:uppercase;margin-bottom:6px;display:block;}
+.form-input{width:100%;background:var(--gray);border:1px solid var(--gray2);border-radius:8px;padding:10px 14px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text);outline:none;transition:border-color .2s;}
+.form-input:focus{border-color:var(--green);background:var(--white);}
+.form-select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;}
+.amount-display{background:var(--navy);border-radius:10px;padding:16px 20px;text-align:center;margin-bottom:20px;}
+.amount-label{font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:4px;}
+.amount-val{font-family:'DM Mono',monospace;font-size:28px;font-weight:500;color:var(--gold);}
+.fee-note{font-size:11px;color:rgba(255,255,255,0.4);margin-top:4px;}
+.submit-btn{width:100%;background:var(--green);color:#fff;font-family:'DM Sans',sans-serif;font-weight:600;font-size:14px;border:none;border-radius:10px;padding:13px;cursor:pointer;transition:all .2s;}
+.submit-btn:hover{background:var(--green-light);}
+.success-toast{display:none;background:var(--green);color:#fff;border-radius:10px;padding:14px 18px;margin-top:14px;font-size:13px;font-weight:500;align-items:center;gap:8px;}
+.success-toast.show{display:flex;}
+
+/* Payout Queue Section */
+.payout-section{background:var(--white);border-radius:14px;border:1px solid var(--gray2);padding:20px;margin-bottom:16px;}
+.payout-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+.payout-title{font-weight:700;font-size:16px;color:var(--navy);}
+.payout-row{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border-radius:8px;margin-bottom:8px;}
+.payout-row:nth-child(odd){background:var(--gray);}
+.payout-row.top{background:var(--gold-pale);border:1px solid rgba(212,175,55,0.25);}
+.payout-num{font-size:12px;font-weight:700;color:var(--text2);width:20px;}
+.payout-info{flex:1;padding:0 12px;}
+.payout-name{font-weight:600;font-size:13px;color:var(--text);}
+.payout-pool{font-size:11px;color:var(--text2);}
+.payout-amt{font-family:'DM Mono',monospace;font-size:13px;color:var(--green);font-weight:500;}
+.payout-date{font-size:11px;color:var(--text2);}
+
+/* NOTIFICATION BADGE */
+.notif-count{background:var(--red);color:#fff;border-radius:50%;width:16px;height:16px;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;}
+
+/* Responsive */
+@media(max-width:500px){.admin-grid{grid-template-columns:repeat(2,1fr);}.hero-stats{gap:20px;}.trust-row{grid-template-columns:1fr;}.nav-tab{padding:4px 8px;font-size:11px;}}
+</style>
+
+<nav class="nav">
+  <div class="nav-brand">Bookey <span>Empire</span></div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="show('landing')">Home</button>
+    <button class="nav-tab" onclick="show('dashboard')">Dashboard</button>
+    <button class="nav-tab" onclick="show('contribute')">Contribute</button>
+    <button class="nav-tab" onclick="show('admin')">Admin</button>
+    <button class="nav-tab" onclick="show('pools')">Pools</button>
+  </div>
+</nav>
+
+<!-- ===== LANDING ===== -->
+<div id="landing" class="screen active">
+  <div class="hero">
+    <div class="hero-eyebrow">Nigeria's Digital Thrift Platform</div>
+    <div class="hero-title">Build Your Empire,<br><em>One Contribution</em> at a Time.</div>
+    <div class="hero-subtitle">Secure, transparent, community-powered savings. Your Ajo — digitized, insured, and automated.</div>
+    <div class="hero-cta-row">
+      <button class="btn-gold" onclick="show('dashboard')">View My Dashboard</button>
+      <button class="btn-outline" onclick="show('contribute')">Make a Contribution</button>
+    </div>
+    <div class="hero-stats">
+      <div><div class="hero-stat-val">₦48.2M</div><div class="hero-stat-label">Total Pooled</div></div>
+      <div><div class="hero-stat-val">247</div><div class="hero-stat-label">Active Members</div></div>
+      <div><div class="hero-stat-val">₦12.4M</div><div class="hero-stat-label">Paid Out</div></div>
+      <div><div class="hero-stat-val">98.7%</div><div class="hero-stat-label">On-Time Rate</div></div>
+    </div>
+  </div>
+
+  <div class="section-title">Choose Your Tier</div>
+  <div class="section-sub">Pick a pool that fits your cash flow. No pressure, no penalty for pausing — just discipline.</div>
+  <div class="tiers-grid">
+    <div class="tier-card">
+      <div class="tier-icon s">🌱</div>
+      <div class="tier-name">Starter</div>
+      <div class="tier-freq">Weekly</div>
+      <div class="tier-amount">₦5,000 <span>/ week</span></div>
+      <div class="tier-cycle">Payout: Quarterly (13 wks)</div>
+    </div>
+    <div class="tier-card featured">
+      <div class="tier-badge">POPULAR</div>
+      <div class="tier-icon g">📈</div>
+      <div class="tier-name">Growth</div>
+      <div class="tier-freq">Monthly</div>
+      <div class="tier-amount">₦100,000 <span>/ month</span></div>
+      <div class="tier-cycle">Payout: Bi-Annual (6 mo)</div>
+    </div>
+    <div class="tier-card">
+      <div class="tier-icon e">👑</div>
+      <div class="tier-name">Empire</div>
+      <div class="tier-freq">Monthly</div>
+      <div class="tier-amount">₦200,000 <span>/ month</span></div>
+      <div class="tier-cycle">Payout: Annual (12 mo)</div>
+    </div>
+    <div class="tier-card">
+      <div class="tier-icon f">⚡</div>
+      <div class="tier-name">Flex</div>
+      <div class="tier-freq">On-Demand</div>
+      <div class="tier-amount">> ₦10,000 <span>/ contrib</span></div>
+      <div class="tier-cycle">Lock: 3–12 months</div>
+    </div>
+  </div>
+
+  <div class="trust-row">
+    <div class="trust-card">
+      <div class="trust-icon">🏦</div>
+      <div class="trust-title">Bank-Secured Escrow</div>
+      <div class="trust-desc">All funds held in regulated partner bank accounts. Never in a personal wallet.</div>
+    </div>
+    <div class="trust-card">
+      <div class="trust-icon">🔒</div>
+      <div class="trust-title">KYC Verified</div>
+      <div class="trust-desc">Every member verified with NIN/BVN. Full audit trail for every transaction.</div>
+    </div>
+    <div class="trust-card">
+      <div class="trust-icon">⚖️</div>
+      <div class="trust-title">Anti-Default Insurance</div>
+      <div class="trust-desc">Pool surplus funds protect your payout even if a member defaults.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== DASHBOARD ===== -->
+<div id="dashboard" class="screen">
+  <div class="dash-header">
+    <div>
+      <div class="dash-greeting">Good morning, <span>Adaeze</span> 👑</div>
+      <div class="dash-date">Tuesday, 21 October 2025 · Bookey Empire Member</div>
+    </div>
+    <div style="display:flex;gap:8px;">
+      <button class="btn-gold" onclick="show('contribute')">+ Contribute</button>
+    </div>
+  </div>
+
+  <div class="metrics-row">
+    <div class="metric-card primary">
+      <div class="metric-label">Total Saved</div>
+      <div class="metric-val">₦2,400,000</div>
+      <div class="metric-change">+₦200,000 this month</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Expected Payout</div>
+      <div class="metric-val" style="color:var(--green)">₦2,352,000</div>
+      <div class="metric-change">In 4 months</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Pool Position</div>
+      <div class="metric-val" style="color:var(--navy)">#4 of 12</div>
+      <div class="metric-change">Empire Tier</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Streak</div>
+      <div class="metric-val" style="color:var(--gold)">12 mos</div>
+      <div class="metric-change" style="color:var(--gold)">🔥 Perfect record</div>
+    </div>
+  </div>
+
+  <div class="pool-card">
+    <div class="pool-header">
+      <div class="pool-title">Empire Pool — Cycle 1 (2025)</div>
+      <span class="pool-badge badge-active">Active</span>
+    </div>
+    <div class="pool-progress-label"><span>Month 12 of 12</span><span>₦24,000,000 / ₦24,000,000</span></div>
+    <div class="pool-bar"><div class="pool-bar-fill" style="width:100%"></div></div>
+    <div class="pool-details">
+      <div><div class="pool-detail-label">Members</div><div class="pool-detail-val">12</div></div>
+      <div><div class="pool-detail-label">Next Payout</div><div class="pool-detail-val">Nov 1, 2025</div></div>
+      <div><div class="pool-detail-label">Your Share</div><div class="pool-detail-val">₦2,352,000</div></div>
+    </div>
+  </div>
+
+  <div class="pool-card">
+    <div class="pool-header">
+      <div class="pool-title">Growth Pool — Cycle 2 (2025)</div>
+      <span class="pool-badge badge-pending">Pending Payout</span>
+    </div>
+    <div class="pool-progress-label"><span>Month 4 of 6</span><span>₦1,200,000 / ₦1,800,000</span></div>
+    <div class="pool-bar"><div class="pool-bar-fill" style="width:67%"></div></div>
+    <div class="pool-details">
+      <div><div class="pool-detail-label">Members</div><div class="pool-detail-val">3 of 6</div></div>
+      <div><div class="pool-detail-label">Next Payout</div><div class="pool-detail-val">Dec 15, 2025</div></div>
+      <div><div class="pool-detail-label">Your Share</div><div class="pool-detail-val">₦588,000</div></div>
+    </div>
+  </div>
+
+  <div class="pool-card">
+    <div class="pool-header"><div class="pool-title">Contribution History</div></div>
+    <table class="history-table">
+      <tr><th>Date</th><th>Pool</th><th>Amount</th><th>Fee</th><th>Status</th></tr>
+      <tr><td>Oct 1</td><td>Empire</td><td style="font-family:'DM Mono',monospace">₦200,000</td><td style="font-family:'DM Mono',monospace;color:var(--text2)">₦4,000</td><td><span class="status-dot dot-green"></span>Confirmed</td></tr>
+      <tr><td>Oct 1</td><td>Growth</td><td style="font-family:'DM Mono',monospace">₦100,000</td><td style="font-family:'DM Mono',monospace;color:var(--text2)">₦2,000</td><td><span class="status-dot dot-green"></span>Confirmed</td></tr>
+      <tr><td>Sep 1</td><td>Empire</td><td style="font-family:'DM Mono',monospace">₦200,000</td><td style="font-family:'DM Mono',monospace;color:var(--text2)">₦4,000</td><td><span class="status-dot dot-green"></span>Confirmed</td></tr>
+      <tr><td>Sep 1</td><td>Growth</td><td style="font-family:'DM Mono',monospace">₦100,000</td><td style="font-family:'DM Mono',monospace;color:var(--text2)">₦2,000</td><td><span class="status-dot dot-green"></span>Confirmed</td></tr>
+      <tr><td>Aug 1</td><td>Empire</td><td style="font-family:'DM Mono',monospace">₦200,000</td><td style="font-family:'DM Mono',monospace;color:var(--text2)">₦4,000</td><td><span class="status-dot dot-gold"></span>Float Interest Earned</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ===== CONTRIBUTE ===== -->
+<div id="contribute" class="screen">
+  <div class="section-title">Record a Contribution</div>
+  <div class="section-sub">All contributions are logged with timestamp and auto-fee deduction.</div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start;flex-wrap:wrap;">
+    <div class="contrib-form">
+      <div class="form-group">
+        <label class="form-label">Member Name</label>
+        <input class="form-input" type="text" id="c-member" placeholder="Search or select member..." oninput="calcContrib()">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Pool Tier</label>
+        <select class="form-input form-select" id="c-tier" onchange="calcContrib()">
+          <option value="">Select tier...</option>
+          <option value="5000">Starter — ₦5,000/week</option>
+          <option value="100000">Growth — ₦100,000/month</option>
+          <option value="200000">Empire — ₦200,000/month</option>
+          <option value="custom">Flex — Custom amount</option>
+        </select>
+      </div>
+      <div class="form-group" id="custom-row" style="display:none">
+        <label class="form-label">Custom Amount (₦)</label>
+        <input class="form-input" type="number" id="c-custom" placeholder="Min ₦10,000" oninput="calcContrib()">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Payment Method</label>
+        <select class="form-input form-select" id="c-method">
+          <option>Bank Transfer</option>
+          <option>USSD</option>
+          <option>Card</option>
+          <option>Cash (Record only)</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Reference / Transaction ID</label>
+        <input class="form-input" type="text" id="c-ref" placeholder="e.g. BKFLW2025101...">
+      </div>
+
+      <div class="amount-display" id="amount-display" style="display:none">
+        <div class="amount-label">Contribution Amount</div>
+        <div class="amount-val" id="amount-val">₦0</div>
+        <div class="fee-note" id="fee-note">Platform fee (2%): ₦0 · Net to pool: ₦0</div>
+      </div>
+
+      <button class="submit-btn" onclick="submitContrib()">✓ Record Contribution</button>
+      <div class="success-toast" id="contrib-success">
+        <span style="font-size:18px">✓</span>
+        <div><strong>Contribution Recorded!</strong><br><span style="font-size:12px;opacity:0.9">Transaction logged. Member notified via SMS.</span></div>
+      </div>
+    </div>
+
+    <div>
+      <div class="payout-section">
+        <div class="payout-header">
+          <div class="payout-title">Upcoming Payouts</div>
+          <span class="pool-badge badge-active" style="font-size:11px">Live Queue</span>
+        </div>
+        <div class="payout-row top">
+          <div class="payout-num">1</div>
+          <div class="payout-info"><div class="payout-name">Chidinma Okafor</div><div class="payout-pool">Empire Pool · Nov 1</div></div>
+          <div><div class="payout-amt">₦2,352,000</div><div class="payout-date">In 11 days</div></div>
+        </div>
+        <div class="payout-row">
+          <div class="payout-num">2</div>
+          <div class="payout-info"><div class="payout-name">Emeka Nwachukwu</div><div class="payout-pool">Growth Pool · Dec 15</div></div>
+          <div><div class="payout-amt">₦588,000</div><div class="payout-date">In 55 days</div></div>
+        </div>
+        <div class="payout-row">
+          <div class="payout-num">3</div>
+          <div class="payout-info"><div class="payout-name">Adaeze Obi-Eze</div><div class="payout-pool">Empire Pool · Dec 1</div></div>
+          <div><div class="payout-amt">₦2,352,000</div><div class="payout-date">In 41 days</div></div>
+        </div>
+        <div class="payout-row">
+          <div class="payout-num">4</div>
+          <div class="payout-info"><div class="payout-name">Bode Adesanya</div><div class="payout-pool">Starter Pool · Nov 15</div></div>
+          <div><div class="payout-amt">₦62,400</div><div class="payout-date">In 25 days</div></div>
+        </div>
+      </div>
+
+      <div class="pool-card" style="margin-bottom:0">
+        <div class="pool-header"><div class="pool-title">Today's Summary</div></div>
+        <div class="pool-details">
+          <div><div class="pool-detail-label">Contributions Today</div><div class="pool-detail-val" style="color:var(--green)">₦1,450,000</div></div>
+          <div><div class="pool-detail-label">Fees Collected</div><div class="pool-detail-val" style="color:var(--gold)">₦29,000</div></div>
+          <div><div class="pool-detail-label">Members Paid</div><div class="pool-detail-val">0 today</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== ADMIN ===== -->
+<div id="admin" class="screen">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+    <div class="section-title">Admin Panel</div>
+    <div style="display:flex;gap:8px;">
+      <button class="btn-outline" style="color:var(--navy);border-color:var(--gray2);font-size:12px;padding:8px 14px;" onclick="alert('Export to CSV — connect to your backend')">↓ Export CSV</button>
+      <button class="btn-gold" style="font-size:12px;padding:8px 14px;" onclick="alert('Add member form — connect to your backend')">+ Add Member</button>
+    </div>
+  </div>
+
+  <div class="admin-grid">
+    <div class="admin-metric">
+      <div class="admin-metric-val green">247</div>
+      <div class="admin-metric-label">Active Members</div>
+    </div>
+    <div class="admin-metric">
+      <div class="admin-metric-val gold">₦48.2M</div>
+      <div class="admin-metric-label">Total Pooled (All Time)</div>
+    </div>
+    <div class="admin-metric">
+      <div class="admin-metric-val" style="color:var(--navy)">₦964K</div>
+      <div class="admin-metric-label">Platform Revenue (MTD)</div>
+    </div>
+    <div class="admin-metric">
+      <div class="admin-metric-val red">3</div>
+      <div class="admin-metric-label">Overdue Contributions</div>
+    </div>
+  </div>
+
+  <input class="search-bar" placeholder="🔍  Search members by name, tier, or status..." oninput="filterMembers(this.value)">
+
+  <table class="members-table" id="members-table">
+    <thead>
+      <tr><th>Member</th><th>Tier</th><th>Contributions</th><th>Last Payment</th><th>Status</th><th>Actions</th></tr>
+    </thead>
+    <tbody id="members-body"></tbody>
+  </table>
+</div>
+
+<!-- ===== POOLS ===== -->
+<div id="pools" class="screen">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+    <div class="section-title">Pool Manager</div>
+    <button class="btn-gold" style="font-size:12px;padding:8px 14px;" onclick="alert('Create new pool — connect to your backend')">+ New Pool</button>
+  </div>
+
+  <div class="pools-grid">
+    <div class="pool-mgr-card">
+      <div class="pool-mgr-header" style="background:var(--navy);">
+        <div class="pool-mgr-name" style="color:var(--gold)">👑 Empire Pool — Cycle 1</div>
+        <div class="pool-mgr-meta" style="color:rgba(255,255,255,0.5)">₦200,000/mo · 12 members · Annual</div>
+      </div>
+      <div class="pool-mgr-body">
+        <div class="pool-progress-label"><span style="font-size:11px;color:var(--text2)">Month 12 complete</span><span style="font-family:'DM Mono',monospace;font-size:11px">₦24,000,000</span></div>
+        <div class="pool-bar"><div class="pool-bar-fill" style="width:100%;background:var(--gold)"></div></div>
+        <div class="pool-queue">
+          <div class="queue-title">Payout Queue</div>
+          <div class="queue-item next"><div><div class="queue-name">Chidinma Okafor</div><div class="queue-pos">→ Next in line</div></div><div class="queue-amount">₦2,352,000</div></div>
+          <div class="queue-item"><div><div class="queue-name">Adaeze Obi-Eze</div><div class="queue-pos">#2</div></div><div class="queue-amount">₦2,352,000</div></div>
+          <div class="queue-item"><div><div class="queue-name">Tunde Adeyemi</div><div class="queue-pos">#3</div></div><div class="queue-amount">₦2,352,000</div></div>
+        </div>
+        <button class="pool-payout-btn" onclick="triggerPayout('Empire Pool')">⚡ Trigger Payout — Chidinma</button>
+      </div>
+    </div>
+
+    <div class="pool-mgr-card">
+      <div class="pool-mgr-header" style="background:#1a3a2a;">
+        <div class="pool-mgr-name" style="color:#5dcaa5">📈 Growth Pool — Cycle 2</div>
+        <div class="pool-mgr-meta" style="color:rgba(255,255,255,0.5)">₦100,000/mo · 6 members · Bi-Annual</div>
+      </div>
+      <div class="pool-mgr-body">
+        <div class="pool-progress-label"><span style="font-size:11px;color:var(--text2)">Month 4 of 6</span><span style="font-family:'DM Mono',monospace;font-size:11px">₦1,200,000 / ₦1,800,000</span></div>
+        <div class="pool-bar"><div class="pool-bar-fill" style="width:67%"></div></div>
+        <div class="pool-queue">
+          <div class="queue-title">Payout Queue</div>
+          <div class="queue-item next"><div><div class="queue-name">Emeka Nwachukwu</div><div class="queue-pos">→ Next — Dec 15</div></div><div class="queue-amount">₦588,000</div></div>
+          <div class="queue-item"><div><div class="queue-name">Ngozi Peterside</div><div class="queue-pos">#2 — Jan 15</div></div><div class="queue-amount">₦588,000</div></div>
+        </div>
+        <button class="pool-payout-btn" onclick="triggerPayout('Growth Pool')" style="background:var(--text2);cursor:not-allowed;">⏳ Payout: Dec 15, 2025</button>
+      </div>
+    </div>
+
+    <div class="pool-mgr-card">
+      <div class="pool-mgr-header" style="background:#2a1a3a;">
+        <div class="pool-mgr-name" style="color:#c084fc">🌱 Starter Pool — Cycle 5</div>
+        <div class="pool-mgr-meta" style="color:rgba(255,255,255,0.5)">₦5,000/wk · 13 members · Quarterly</div>
+      </div>
+      <div class="pool-mgr-body">
+        <div class="pool-progress-label"><span style="font-size:11px;color:var(--text2)">Week 9 of 13</span><span style="font-family:'DM Mono',monospace;font-size:11px">₦585,000 / ₦845,000</span></div>
+        <div class="pool-bar"><div class="pool-bar-fill" style="width:69%;background:#c084fc"></div></div>
+        <div class="pool-queue">
+          <div class="queue-title">Payout Queue</div>
+          <div class="queue-item next"><div><div class="queue-name">Bode Adesanya</div><div class="queue-pos">→ Next — Nov 15</div></div><div class="queue-amount">₦62,400</div></div>
+          <div class="queue-item"><div><div class="queue-name">Fatima Bello</div><div class="queue-pos">#2 — Dec 15</div></div><div class="queue-amount">₦62,400</div></div>
+        </div>
+        <button class="pool-payout-btn" onclick="triggerPayout('Starter Pool')" style="background:#7c3aed;">⚡ Trigger Payout — Bode</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const MEMBERS = [
+  {name:'Adaeze Obi-Eze',tier:'Empire',contributions:12,lastPay:'Oct 1, 2025',status:'Good Standing'},
+  {name:'Chidinma Okafor',tier:'Empire',contributions:12,lastPay:'Oct 1, 2025',status:'Good Standing'},
+  {name:'Emeka Nwachukwu',tier:'Growth',contributions:4,lastPay:'Oct 1, 2025',status:'Good Standing'},
+  {name:'Tunde Adeyemi',tier:'Empire',contributions:12,lastPay:'Oct 1, 2025',status:'Good Standing'},
+  {name:'Bode Adesanya',tier:'Starter',contributions:9,lastPay:'Oct 10, 2025',status:'Good Standing'},
+  {name:'Ngozi Peterside',tier:'Growth',contributions:4,lastPay:'Oct 1, 2025',status:'Good Standing'},
+  {name:'Fatima Bello',tier:'Starter',contributions:8,lastPay:'Oct 5, 2025',status:'Good Standing'},
+  {name:'Kola Adebanjo',tier:'Flex',contributions:2,lastPay:'Sep 15, 2025',status:'Overdue'},
+  {name:'Amaka Okonkwo',tier:'Growth',contributions:3,lastPay:'Sep 1, 2025',status:'Overdue'},
+  {name:'Ibrahim Hassan',tier:'Empire',contributions:11,lastPay:'Sep 1, 2025',status:'Overdue'},
+  {name:'Tokunbo Fashola',tier:'Starter',contributions:9,lastPay:'Oct 12, 2025',status:'Good Standing'},
+  {name:'Chiamaka Eze',tier:'Empire',contributions:12,lastPay:'Oct 1, 2025',status:'Good Standing'},
+];
+
+const tierClass = {Empire:'pill-empire',Growth:'pill-growth',Starter:'pill-starter',Flex:'pill-flex'};
+const statusBadge = s => s==='Good Standing'
+  ? `<span class="status-dot dot-green"></span>${s}`
+  : `<span class="status-dot dot-red"></span><span style="color:var(--red)">${s}</span>`;
+
+function renderMembers(list){
+  document.getElementById('members-body').innerHTML = list.map(m=>`
+    <tr>
+      <td><strong>${m.name}</strong></td>
+      <td><span class="tier-pill ${tierClass[m.tier]}">${m.tier}</span></td>
+      <td style="font-family:'DM Mono',monospace">${m.contributions}</td>
+      <td style="color:var(--text2)">${m.lastPay}</td>
+      <td>${statusBadge(m.status)}</td>
+      <td style="display:flex;gap:6px;">
+        <button class="action-btn" onclick="alert('View profile: ${m.name}')">View</button>
+        ${m.status==='Overdue'?`<button class="action-btn warn" onclick="alert('Send reminder to: ${m.name}')">Remind</button>`:''}
+      </td>
+    </tr>`).join('');
+}
+renderMembers(MEMBERS);
+
+function filterMembers(q){
+  const f = q.toLowerCase();
+  renderMembers(MEMBERS.filter(m=>m.name.toLowerCase().includes(f)||m.tier.toLowerCase().includes(f)||m.status.toLowerCase().includes(f)));
+}
+
+function show(s){
+  document.querySelectorAll('.screen').forEach(el=>el.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(el=>el.classList.remove('active'));
+  document.getElementById(s).classList.add('active');
+  const tabs={landing:0,dashboard:1,contribute:2,admin:3,pools:4};
+  document.querySelectorAll('.nav-tab')[tabs[s]].classList.add('active');
+}
+
+function calcContrib(){
+  const tier = document.getElementById('c-tier').value;
+  const customRow = document.getElementById('custom-row');
+  const display = document.getElementById('amount-display');
+  customRow.style.display = tier==='custom'?'block':'none';
+  let amount = tier==='custom' ? parseInt(document.getElementById('c-custom').value||0) : parseInt(tier||0);
+  if(amount > 0){
+    const fee = Math.round(amount*0.02);
+    const net = amount - fee;
+    document.getElementById('amount-val').textContent = '₦'+amount.toLocaleString();
+    document.getElementById('fee-note').textContent = `Platform fee (2%): ₦${fee.toLocaleString()} · Net to pool: ₦${net.toLocaleString()}`;
+    display.style.display = 'block';
+  } else { display.style.display = 'none'; }
+}
+
+function submitContrib(){
+  const member = document.getElementById('c-member').value;
+  const tier = document.getElementById('c-tier').value;
+  if(!member || !tier){ alert('Please fill in member name and tier.'); return; }
+  const toast = document.getElementById('contrib-success');
+  toast.classList.add('show');
+  setTimeout(()=>toast.classList.remove('show'), 4000);
+  document.getElementById('c-member').value='';
+  document.getElementById('c-tier').value='';
+  document.getElementById('c-ref').value='';
+  document.getElementById('amount-display').style.display='none';
+}
+
+function triggerPayout(pool){
+  if(confirm(`Confirm payout trigger for ${pool}?\n\nThis will initiate bank transfer to the next member in queue.\n\nThis action requires admin approval.`)){
+    alert(`✓ Payout request for ${pool} submitted.\nAwaiting 2nd admin signature for release.`);
+  }
+}
+</script>
